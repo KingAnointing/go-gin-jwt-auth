@@ -15,5 +15,5 @@ func main() {
 	routers.AuthRoutes(router)
 	routers.UserRoutes(router)
 
-	router.Run(port)
+	router.Run(":" + port)
 }
