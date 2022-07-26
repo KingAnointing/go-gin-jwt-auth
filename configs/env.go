@@ -28,5 +28,5 @@ func ConnectionPort() string {
 		log.Fatal(err)
 	}
 
-	return os.Getenv("DATABASEURI")
+	return os.Getenv("PORT")
 }
