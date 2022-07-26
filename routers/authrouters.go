@@ -1,1 +1,5 @@
 package routers
+
+func AuthRouter() {
+
+}
