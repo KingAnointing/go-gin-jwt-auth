@@ -12,6 +12,7 @@ func main() {
 		port = "8080"
 	}
 	router := gin.New()
+	router.Use(gin.Logger())
 	routers.AuthRoutes(router)
 	routers.UserRoutes(router)
 
