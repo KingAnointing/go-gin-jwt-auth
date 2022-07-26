@@ -1,7 +1,10 @@
 package routers
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/KingAnointing/go-gin-jwt-project/controllers"
+	"github.com/gin-gonic/gin"
+)
 
 func AuthRoutes(router *gin.Engine) {
-
+	router.GET("test/greeter1",controllers.Greeter1())
 }
