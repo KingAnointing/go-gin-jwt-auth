@@ -6,11 +6,13 @@ import (
 	"time"
 
 	"github.com/KingAnointing/go-gin-jwt-project/configs"
+	"github.com/KingAnointing/go-gin-jwt-project/helpers"
 	"github.com/KingAnointing/go-gin-jwt-project/models"
 	"github.com/KingAnointing/go-gin-jwt-project/responses"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -70,5 +72,14 @@ func SignUp() gin.HandlerFunc {
 			c.JSON(http.StatusInternalServerError, responses.Response{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"error": err.Error()}})
 			return
 		}
+
+		user.ID = primitive.NewObjectID()
+		user.CreatedAt, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
+		user.UpdatedAt, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
+		user.UserId = user.ID.Hex()
+		token, refreshToken, _ := helpers.GenerateAllToken(user.FirstName, user.LastName, user.Email, user.UserId, user.UserType)
+		user.Token = &token
+		user.RefreshToken = &refreshToken
+
 	}
 }
