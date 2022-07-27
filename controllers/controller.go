@@ -10,6 +10,7 @@ import (
 	"github.com/KingAnointing/go-gin-jwt-project/responses"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -45,6 +46,17 @@ func SignUp() gin.HandlerFunc {
 
 		if validateErr := validate.Struct(&user); validateErr != nil {
 			c.JSON(http.StatusBadRequest, responses.Response{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"error": validateErr.Error()}})
+			return
+		}
+
+		count,err := collections.CountDocuments(ctx,bson.M{"email":user.Email})
+		if count > 0  {
+			c.JSON(http.StatusInternalServerError,responses.Response{Status: http.StatusInternalServerError, Message: "error",Data: map[string]interface{}{"error": "Email already Exist in Database"}})
+			return
+		}
+
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, responses.Response{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"error": err.Error()}})
 			return
 		}
 	}
