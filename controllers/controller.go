@@ -42,5 +42,10 @@ func SignUp() gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, responses.Response{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"error": err.Error()}})
 			return
 		}
+
+		if validateErr := validate.Struct(&user); validateErr != nil {
+			c.JSON(http.StatusBadRequest, responses.Response{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"error": validateErr.Error()}})
+			return
+		}
 	}
 }
