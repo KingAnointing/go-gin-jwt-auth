@@ -3,9 +3,15 @@ package controllers
 import (
 	"net/http"
 
+	"github.com/KingAnointing/go-gin-jwt-project/configs"
 	"github.com/KingAnointing/go-gin-jwt-project/responses"
 	"github.com/gin-gonic/gin"
+	"github.com/go-playground/validator/v10"
+	"go.mongodb.org/mongo-driver/mongo"
 )
+
+var collections *mongo.Collection = configs.Collections("jwt-user")
+var validate = validator.New()
 
 // greeter function to test API-1
 func Greeter1() gin.HandlerFunc {
@@ -24,6 +30,6 @@ func Greeter2() gin.HandlerFunc {
 // signup function --> Creating user and essential item needed
 func SignUp() gin.HandlerFunc {
 	return func(c *gin.Context) {
-
+		
 	}
 }
