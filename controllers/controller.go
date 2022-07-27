@@ -20,3 +20,10 @@ func Greeter2() gin.HandlerFunc {
 		ctx.JSON(http.StatusOK, responses.Response{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": "Hello from API user router"}})
 	}
 }
+
+// signup function --> Creating user and essential item needed
+func SignUp() gin.HandlerFunc {
+	return func(c *gin.Context) {
+
+	}
+}
