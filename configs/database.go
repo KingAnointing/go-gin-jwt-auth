@@ -9,7 +9,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func DatabaseConnection() {
+func DatabaseConnection() *mongo.Client {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
@@ -28,10 +28,19 @@ func DatabaseConnection() {
 	}
 
 	// ping database to see if it is up
-	err = client.Ping(ctx,nil)
+	err = client.Ping(ctx, nil)
 	if err != nil {
 		log.Panicln("Database server is down !!")
 		log.Fatal(err)
 	}
 
+	// return client
+	return client
+
+}
+
+var DbClient *mongo.Client = DatabaseConnection()
+
+func Collections(collectionName string) *mongo.Collection {
+	return DbClient.Database("cluster1").Collection(collectionName)
 }
