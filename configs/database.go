@@ -19,4 +19,11 @@ func DatabaseConnection() {
 		log.Panicln("Unable to create new MongoDB client!!")
 		log.Fatal(err)
 	}
+
+	//connect client to Database
+	err = client.Connect(ctx)
+	if err != nil {
+		log.Panicln("Unable to connect client to database!!")
+		log.Fatal(err)
+	}
 }
