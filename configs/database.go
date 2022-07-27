@@ -26,4 +26,12 @@ func DatabaseConnection() {
 		log.Panicln("Unable to connect client to database!!")
 		log.Fatal(err)
 	}
+
+	// ping database to see if it is up
+	err = client.Ping(ctx,nil)
+	if err != nil {
+		log.Panicln("Database server is down !!")
+		log.Fatal(err)
+	}
+
 }
