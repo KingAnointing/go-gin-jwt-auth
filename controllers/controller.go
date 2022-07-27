@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/KingAnointing/go-gin-jwt-project/configs"
+	"github.com/KingAnointing/go-gin-jwt-project/models"
 	"github.com/KingAnointing/go-gin-jwt-project/responses"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -34,5 +35,12 @@ func SignUp() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 100*time.Second)
 		defer cancel()
+
+		var user models.User
+
+		if err := c.BindJSON(&user); err != nil {
+			c.JSON(http.StatusBadRequest, responses.Response{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"error": err.Error()}})
+			return
+		}
 	}
 }
