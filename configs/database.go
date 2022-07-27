@@ -2,6 +2,7 @@ package configs
 
 import (
 	"context"
+	"log"
 	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -13,5 +14,9 @@ func DatabaseConnection() {
 	defer cancel()
 
 	// create client for database
-	mongo.NewClient(options.Client().ApplyURI(DatabaseURI()))
+	client, err := mongo.NewClient(options.Client().ApplyURI(DatabaseURI()))
+	if err != nil {
+		log.Panicln("Unable to create new MongoDB client!!")
+		log.Fatal(err)
+	}
 }
