@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"context"
+	"log"
 	"net/http"
 	"time"
 
@@ -14,6 +15,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"golang.org/x/crypto/bcrypt"
 )
 
 var collections *mongo.Collection = configs.Collections("jwt-user")
@@ -31,6 +33,15 @@ func Greeter2() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, responses.Response{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": "Hello from API user router"}})
 	}
+}
+
+func HashPassword(password string) string {
+	byte, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return string(byte)
 }
 
 // signup function --> Creating user and essential item needed
@@ -81,5 +92,7 @@ func SignUp() gin.HandlerFunc {
 		user.Token = &token
 		user.RefreshToken = &refreshToken
 
+		hashedPassword := HashPassword(*user.Password)
+		user.Password = &hashedPassword
 	}
 }
