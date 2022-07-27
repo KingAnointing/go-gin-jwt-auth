@@ -5,7 +5,9 @@ import (
 
 	"github.com/golang-jwt/jwt/v4"
 )
+
 var secret_key = ""
+
 type SignedDetail struct {
 	FirstName string
 	LastName  string
@@ -33,4 +35,6 @@ func GenerateAllToken(firstName string, lastName string, email string, uid strin
 		},
 	}
 
+	token, err := jwt.NewWithClaims(jwt.SigningMethodHS256, claims).SignedString([]byte(secret_key))
+	refreshToken, err := jwt.NewWithClaims(jwt.SigningMethodHS256, refreshClaims).SignedString([]byte(secret_key))
 }
