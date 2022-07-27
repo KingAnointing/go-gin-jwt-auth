@@ -1,7 +1,9 @@
 package controllers
 
 import (
+	"context"
 	"net/http"
+	"time"
 
 	"github.com/KingAnointing/go-gin-jwt-project/configs"
 	"github.com/KingAnointing/go-gin-jwt-project/responses"
@@ -30,6 +32,7 @@ func Greeter2() gin.HandlerFunc {
 // signup function --> Creating user and essential item needed
 func SignUp() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		
+		ctx, cancel := context.WithTimeout(context.Background(), 100*time.Second)
+		defer cancel()
 	}
 }
