@@ -49,9 +49,20 @@ func SignUp() gin.HandlerFunc {
 			return
 		}
 
-		count,err := collections.CountDocuments(ctx,bson.M{"email":user.Email})
-		if count > 0  {
-			c.JSON(http.StatusInternalServerError,responses.Response{Status: http.StatusInternalServerError, Message: "error",Data: map[string]interface{}{"error": "Email already Exist in Database"}})
+		count, err := collections.CountDocuments(ctx, bson.M{"email": user.Email})
+		if count > 0 {
+			c.JSON(http.StatusInternalServerError, responses.Response{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"error": "Email already Exist in Database"}})
+			return
+		}
+
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, responses.Response{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"error": err.Error()}})
+			return
+		}
+
+		count, err = collections.CountDocuments(ctx, bson.M{"phone": user.Phone})
+		if count > 0 {
+			c.JSON(http.StatusInternalServerError, responses.Response{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"error": "Phone Number already Exist in Database"}})
 			return
 		}
 
