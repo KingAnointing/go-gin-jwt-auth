@@ -145,9 +145,17 @@ func Login() gin.HandlerFunc {
 		}
 
 		if *foundUser.Email == "" {
-			c.JSON(http.StatusInternalServerError, responses.Response{Status: http.StatusInternalServerError,Message: "error",Data: map[string]interface{}{"error":"User Not Found !!"}})
+			c.JSON(http.StatusInternalServerError, responses.Response{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"error": "User Not Found !!"}})
 			return
 		}
 
+		token, refreshtoken, _ := helpers.GenerateAllToken(*foundUser.FirstName, *foundUser.LastName, *foundUser.Email, foundUser.UserId, *foundUser.UserType)
+
+		UpdateAlltoken(token, refreshtoken, foundUser.UserId)
+
+		if err := collections.FindOne(ctx, bson.M{"user_id": foundUser.UserId}).Decode(&foundUser); err != nil {
+			c.JSON(http.StatusInternalServerError, responses.Response{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"error": err.Error()}})
+			return
+		}
 	}
 }

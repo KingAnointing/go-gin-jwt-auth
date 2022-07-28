@@ -41,3 +41,4 @@ func GenerateAllToken(firstName string, lastName string, email string, uid strin
 
 	return token, refreshToken, err
 }
+
