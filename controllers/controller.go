@@ -144,6 +144,10 @@ func Login() gin.HandlerFunc {
 			return
 		}
 
+		if *foundUser.Email == "" {
+			c.JSON(http.StatusInternalServerError, responses.Response{Status: http.StatusInternalServerError,Message: "error",Data: map[string]interface{}{"error":"User Not Found !!"}})
+			return
+		}
 
 	}
 }
