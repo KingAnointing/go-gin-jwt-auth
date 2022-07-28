@@ -130,5 +130,9 @@ func Login() gin.HandlerFunc {
 		}
 
 		isPassword, err := VerifyPassword(*user.Password, *foundUser.Password)
+		if !isPassword {
+			c.JSON(http.StatusInternalServerError, responses.Response{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"error": err}})
+			return
+		}
 	}
 }
