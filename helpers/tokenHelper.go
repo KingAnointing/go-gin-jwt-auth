@@ -14,7 +14,7 @@ type SignedDetail struct {
 	Email     string
 	Uid       string
 	UserType  string
-	jwt.StandardClaims
+	jwt.RegisteredClaims
 }
 
 func GenerateAllToken(firstName string, lastName string, email string, uid string, userType string) (string, string, error) {
@@ -24,19 +24,20 @@ func GenerateAllToken(firstName string, lastName string, email string, uid strin
 		Email:     email,
 		Uid:       uid,
 		UserType:  userType,
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Local().Add(24 * time.Hour).Unix(),
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: &jwt.NumericDate{time.Now().Add(time.Hour * 24)},
+			// ExpiresAt: time.Now().Local().Add(24 * time.Hour).Unix(),
 		},
 	}
 
 	refreshClaims := &SignedDetail{
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Local().Add(184 * time.Hour).Unix(),
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: &jwt.NumericDate{time.Now().Add(time.Hour * 184)},
 		},
 	}
 
 	token, err := jwt.NewWithClaims(jwt.SigningMethodHS256, claims).SignedString([]byte(secret_key))
 	refreshToken, err := jwt.NewWithClaims(jwt.SigningMethodHS256, refreshClaims).SignedString([]byte(secret_key))
 
-	return token,refreshToken,err
+	return token, refreshToken, err
 }
