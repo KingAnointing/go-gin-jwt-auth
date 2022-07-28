@@ -107,6 +107,15 @@ func SignUp() gin.HandlerFunc {
 
 		hashedPassword := HashPassword(*user.Password)
 		user.Password = &hashedPassword
+
+		result, err := collections.InsertOne(ctx, &user)
+
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, responses.Response{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"error": err.Error()}})
+			return
+		}
+
+		c.JSON(http.StatusCreated, responses.Response{Status: http.StatusCreated, Message: "success", Data: map[string]interface{}{"data": result}})
 	}
 }
 
