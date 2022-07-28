@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -42,6 +43,18 @@ func HashPassword(password string) string {
 	}
 
 	return string(byte)
+}
+
+func VerifyPassword(hashedPassword, password string) (bool, string) {
+	err := bcrypt.CompareHashAndPassword([]byte(password), []byte(hashedPassword))
+	isValid := true
+	msg := ""
+	if err != nil {
+		isValid = false
+		msg = fmt.Sprintf("Password is Incorrect,%v", err.Error())
+		return isValid, msg
+	}
+	return isValid, msg
 }
 
 // signup function --> Creating user and essential item needed
@@ -116,5 +129,6 @@ func Login() gin.HandlerFunc {
 			return
 		}
 
+		isPassword, err := VerifyPassword(*user.Password, *foundUser.Password)
 	}
 }
