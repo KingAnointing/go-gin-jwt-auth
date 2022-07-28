@@ -100,6 +100,7 @@ func SignUp() gin.HandlerFunc {
 // login function --> Post login cred like email and password to get logged in
 func Login() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		
+		var user models.User
+		var foundUser models.User
 	}
 }
