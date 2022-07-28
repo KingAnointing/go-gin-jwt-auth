@@ -103,8 +103,16 @@ func Login() gin.HandlerFunc {
 		var user models.User
 		var foundUser models.User
 
+		ctx, cancel := context.WithTimeout(context.Background(), 100*time.Second)
+		defer cancel()
+
 		if err := c.BindJSON(&user); err != nil {
-			c.JSON(http.StatusBadRequest,responses.Response{Status: http.StatusBadRequest,Message: "error", Data: map[string]interface{}{"data":err.Error()}})
+			c.JSON(http.StatusBadRequest, responses.Response{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"error": err.Error()}})
+			return
+		}
+
+		if err := collections.FindOne(ctx, bson.M{"email": user.Email}).Decode(&foundUser); err != nil {
+			c.JSON(http.StatusInternalServerError, responses.Response{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"error": "Email or Password Incorrect !!"}})
 			return
 		}
 
