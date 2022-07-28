@@ -102,5 +102,11 @@ func Login() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var user models.User
 		var foundUser models.User
+
+		if err := c.BindJSON(&user); err != nil {
+			c.JSON(http.StatusBadRequest,responses.Response{Status: http.StatusBadRequest,Message: "error", Data: map[string]interface{}{"data":err.Error()}})
+			return
+		}
+
 	}
 }
