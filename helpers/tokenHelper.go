@@ -4,6 +4,8 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 var secret_key = ""
@@ -42,3 +44,11 @@ func GenerateAllToken(firstName string, lastName string, email string, uid strin
 	return token, refreshToken, err
 }
 
+func UpdateAlltoken(claims, refreshClaims, userId string) {
+	var updateObj primitive.D
+
+	updateObj = append(updateObj, bson.E{"token", claims})
+	updateObj = append(updateObj, bson.E{"refresh_token", refreshClaims})
+	updated_at, _ := time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
+	updateObj = append(updateObj, bson.E{"updated_at", updated_at})
+}
