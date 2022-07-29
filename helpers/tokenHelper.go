@@ -66,4 +66,5 @@ func UpdateAlltoken(claims, refreshClaims, userId string) {
 	}
 
 	collections.UpdateOne(ctx, filter, updateObj, &opt)
+	return
 }
