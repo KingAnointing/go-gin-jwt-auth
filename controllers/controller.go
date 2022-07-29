@@ -162,7 +162,7 @@ func Login() gin.HandlerFunc {
 	}
 }
 
-// get a single user --> only admin can get all user and regular user can only get thier own profile
+// get a single user --> only admin can get any user and regular user can only get thier own profile
 func GetAUser() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 100*time.Second)
@@ -180,5 +180,12 @@ func GetAUser() gin.HandlerFunc {
 		}
 
 		c.JSON(http.StatusOK, responses.Response{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": user}})
+	}
+}
+
+// get users --> only admin will be able to access all user profile
+func GetUsers() gin.HandlerFunc {
+	return func(c *gin.Context) {
+
 	}
 }
