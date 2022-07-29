@@ -6,9 +6,11 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 var secret_key = ""
+
 
 type SignedDetail struct {
 	FirstName string
@@ -54,4 +56,10 @@ func UpdateAlltoken(claims, refreshClaims, userId string) {
 
 	upsert := true
 	filter := bson.M{"user_id": userId}
+
+	opt := options.UpdateOptions{
+		Upsert: &upsert,
+	}
+
+
 }
