@@ -161,3 +161,10 @@ func Login() gin.HandlerFunc {
 		c.JSON(http.StatusOK,responses.Response{Status: http.StatusOK,Message: "success",Data: map[string]interface{}{"data":foundUser}})
 	}
 }
+
+// get a single user --> only admin can get all user and regular user can only get thier own profile
+func GetAUser() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		
+	}
+}
