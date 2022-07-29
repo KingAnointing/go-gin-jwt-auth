@@ -186,6 +186,7 @@ func GetAUser() gin.HandlerFunc {
 // get users --> only admin will be able to access all user profile
 func GetUsers() gin.HandlerFunc {
 	return func(c *gin.Context) {
-
+		ctx, cancel := context.WithTimeout(context.Background(), 100*time.Second)
+		defer cancel()
 	}
 }
