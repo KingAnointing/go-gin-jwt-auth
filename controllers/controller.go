@@ -165,6 +165,8 @@ func Login() gin.HandlerFunc {
 // get a single user --> only admin can get all user and regular user can only get thier own profile
 func GetAUser() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		ctx,cancel := context.WithTimeout(context.Background(),100*time.Second)
+		defer cancel()
 		
 	}
 }
