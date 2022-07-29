@@ -1,8 +1,10 @@
 package helpers
 
 import (
+	"context"
 	"time"
 
+	"github.com/KingAnointing/go-gin-jwt-project/configs"
 	"github.com/golang-jwt/jwt/v4"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -10,7 +12,7 @@ import (
 )
 
 var secret_key = ""
-
+var collections = configs.Collections("jwt-user")
 
 type SignedDetail struct {
 	FirstName string
@@ -48,6 +50,8 @@ func GenerateAllToken(firstName string, lastName string, email string, uid strin
 
 func UpdateAlltoken(claims, refreshClaims, userId string) {
 	var updateObj primitive.D
+	ctx, cancel := context.WithTimeout(context.Background(), 100*time.Second)
+	defer cancel()
 
 	updateObj = append(updateObj, bson.E{"token", claims})
 	updateObj = append(updateObj, bson.E{"refresh_token", refreshClaims})
@@ -61,5 +65,5 @@ func UpdateAlltoken(claims, refreshClaims, userId string) {
 		Upsert: &upsert,
 	}
 
-
+	collections.UpdateOne(ctx, filter, updateObj, &opt)
 }
