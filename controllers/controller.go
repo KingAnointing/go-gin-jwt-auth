@@ -167,12 +167,16 @@ func GetAUser() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 100*time.Second)
 		defer cancel()
-
+		var user models.User
 		userId := c.Param("userId")
 		if err := helpers.MatchUserTypeToId(c, userId); err != nil {
 			c.JSON(http.StatusInternalServerError, responses.Response{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
-		
+
+		if err := collections.FindOne(ctx, bson.M{"user_id": userId}).Decode(&user); err != nil {
+			c.JSON(http.StatusInternalServerError, responses.Response{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+			return
+		}
 	}
 }
