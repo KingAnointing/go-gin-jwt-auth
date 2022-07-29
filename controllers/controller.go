@@ -188,5 +188,7 @@ func GetUsers() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 100*time.Second)
 		defer cancel()
+
+		
 	}
 }
