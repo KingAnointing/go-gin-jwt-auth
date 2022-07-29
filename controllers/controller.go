@@ -158,15 +158,21 @@ func Login() gin.HandlerFunc {
 			return
 		}
 
-		c.JSON(http.StatusOK,responses.Response{Status: http.StatusOK,Message: "success",Data: map[string]interface{}{"data":foundUser}})
+		c.JSON(http.StatusOK, responses.Response{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": foundUser}})
 	}
 }
 
 // get a single user --> only admin can get all user and regular user can only get thier own profile
 func GetAUser() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		ctx,cancel := context.WithTimeout(context.Background(),100*time.Second)
+		ctx, cancel := context.WithTimeout(context.Background(), 100*time.Second)
 		defer cancel()
+
+		userId := c.Param("userId")
+		if err := helpers.MatchUserTypeToId(c, userId); err != nil {
+			c.JSON(http.StatusInternalServerError, responses.Response{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+			return
+		}
 		
 	}
 }
