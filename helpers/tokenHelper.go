@@ -2,6 +2,7 @@ package helpers
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/KingAnointing/go-gin-jwt-project/configs"
@@ -67,4 +68,23 @@ func UpdateAlltoken(claims, refreshClaims, userId string) {
 
 	collections.UpdateOne(ctx, filter, updateObj, &opt)
 	return
+}
+
+func ValidateToken(userToken string) (claims *SignedDetail, msg string) {
+	token, err := jwt.ParseWithClaims(userToken, SignedDetail{}, func(t *jwt.Token) (interface{}, error) { return []byte(secret_key), nil })
+	if err != nil {
+		msg = err.Error()
+		return
+	}
+	claims, ok := token.Claims.(*SignedDetail)
+	if !ok {
+		msg = fmt.Sprintf("The Token is Invalid")
+		return
+	}
+
+	if claims.VerifyExpiresAt(claims.ExpiresAt.Time, true) {
+		msg = fmt.Sprintf("Token has Expired and it is no longer valid")
+		return
+	}
+	return claims,msg
 }
