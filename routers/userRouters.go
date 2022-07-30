@@ -8,4 +8,5 @@ import (
 func UserRoutes(router *gin.Engine) {
 	router.GET("test/greeter2", controllers.Greeter2())
 	router.GET("user/:userId", controllers.GetAUser())
+	router.GET("users", controllers.GetUsers())
 }
