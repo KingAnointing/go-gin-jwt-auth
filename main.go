@@ -7,6 +7,7 @@ import (
 )
 
 func main() {
+	configs.DatabaseConnection()
 	port := configs.ConnectionPort()
 	if port == "" {
 		port = "8080"
