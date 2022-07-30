@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/KingAnointing/go-gin-jwt-project/configs"
@@ -192,6 +193,15 @@ func GetUsers() gin.HandlerFunc {
 		if err := helpers.CheckUserType(c, "ADMIN"); err != nil {
 			c.JSON(http.StatusInternalServerError, responses.Response{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"error": err.Error()}})
 			return
+		}
+		recordPerPage, err := strconv.Atoi(c.Query("recordPerPage"))
+		if err != nil || recordPerPage < 1 {
+			recordPerPage = 10
+		}
+
+		page, err1 := strconv.Atoi(c.Query("page"))
+		if err != nil || page < 1 {
+			page = 1
 		}
 	}
 }
