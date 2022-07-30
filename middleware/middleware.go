@@ -23,5 +23,12 @@ func Authentication() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
+
+		c.Set("first_name",claims.FirstName)
+		c.Set("last_name",claims.LastName)
+		c.Set("email",claims.Email,)
+		c.Set("uid",claims.Uid)
+		c.Set("user_type",claims.UserType)
+		c.Next()
 	}
 }
