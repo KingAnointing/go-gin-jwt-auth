@@ -71,7 +71,7 @@ func UpdateAlltoken(claims, refreshClaims, userId string) {
 }
 
 func ValidateToken(userToken string) (claims *SignedDetail, msg string) {
-	token, err := jwt.ParseWithClaims(userToken, SignedDetail{}, func(t *jwt.Token) (interface{}, error) { return []byte(secret_key), nil })
+	token, err := jwt.ParseWithClaims(userToken, &SignedDetail{}, func(t *jwt.Token) (interface{}, error) { return []byte(secret_key), nil })
 	if err != nil {
 		msg = err.Error()
 		return
