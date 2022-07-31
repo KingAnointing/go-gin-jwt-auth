@@ -39,7 +39,7 @@ func GenerateAllToken(firstName string, lastName string, email string, uid strin
 
 	refreshClaims := &SignedDetail{
 		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: &jwt.NumericDate{time.Now().Add(time.Hour * 184)},
+			ExpiresAt: &jwt.NumericDate{time.Now().Add(time.Hour * 345)},
 		},
 	}
 
