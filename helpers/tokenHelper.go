@@ -60,7 +60,7 @@ func UpdateAlltoken(claims, refreshClaims, userId string) {
 	updateObj = append(updateObj, bson.E{"updated_at", updated_at})
 
 	upsert := true
-	filter := bson.M{"user_id": userId}
+	filter := bson.M{"userid": userId}
 
 	opt := options.UpdateOptions{
 		Upsert: &upsert,

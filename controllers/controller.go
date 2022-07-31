@@ -175,7 +175,7 @@ func GetAUser() gin.HandlerFunc {
 			return
 		}
 
-		if err := collections.FindOne(ctx, bson.M{"user_id": userId}).Decode(&user); err != nil {
+		if err := collections.FindOne(ctx, bson.M{"userid": userId}).Decode(&user); err != nil {
 			c.JSON(http.StatusInternalServerError, responses.Response{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
