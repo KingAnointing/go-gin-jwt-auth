@@ -99,12 +99,12 @@ func SignUp() gin.HandlerFunc {
 		}
 
 		user.ID = primitive.NewObjectID()
-		user.CreatedAt, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
-		user.UpdatedAt, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
-		user.UserId = user.ID.Hex()
-		token, refreshToken, _ := helpers.GenerateAllToken(*user.FirstName, *user.LastName, *user.Email, user.UserId, *user.UserType)
+		user.Created_At, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
+		user.Updated_At, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
+		user.User_Id = user.ID.Hex()
+		token, refreshToken, _ := helpers.GenerateAllToken(*user.First_Name, *user.Last_Name, *user.Email, user.User_Id, *user.User_Type)
 		user.Token = &token
-		user.RefreshToken = &refreshToken
+		user.Refresh_Token = &refreshToken
 
 		hashedPassword := HashPassword(*user.Password)
 		user.Password = &hashedPassword
@@ -150,11 +150,11 @@ func Login() gin.HandlerFunc {
 			return
 		}
 
-		token, refreshtoken, _ := helpers.GenerateAllToken(*foundUser.FirstName, *foundUser.LastName, *foundUser.Email, foundUser.UserId, *foundUser.UserType)
+		token, refreshtoken, _ := helpers.GenerateAllToken(*foundUser.First_Name, *foundUser.Last_Name, *foundUser.Email, foundUser.User_Id, *foundUser.User_Type)
 
-		helpers.UpdateAlltoken(token, refreshtoken, foundUser.UserId)
+		helpers.UpdateAlltoken(token, refreshtoken, foundUser.User_Id)
 
-		if err := collections.FindOne(ctx, bson.M{"userid": foundUser.UserId}).Decode(&foundUser); err != nil {
+		if err := collections.FindOne(ctx, bson.M{"user_id": foundUser.User_Id}).Decode(&foundUser); err != nil {
 			c.JSON(http.StatusInternalServerError, responses.Response{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
@@ -175,7 +175,7 @@ func GetAUser() gin.HandlerFunc {
 			return
 		}
 
-		if err := collections.FindOne(ctx, bson.M{"userid": userId}).Decode(&user); err != nil {
+		if err := collections.FindOne(ctx, bson.M{"user_id": userId}).Decode(&user); err != nil {
 			c.JSON(http.StatusInternalServerError, responses.Response{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
